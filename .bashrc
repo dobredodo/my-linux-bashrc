@@ -70,7 +70,7 @@ bash_prompt() {
 }
 
 function prompt_right() {
-  echo -e "\033[0;36m$(echo - )\D{%H:%M:%S}\033[0m"
+  echo -e "\033[0;36m\u23F1 \$(echo - ) \u23F2 \D{%H:%M:%S}\033[0m"
 }
 
 function prompt_left() {
@@ -140,7 +140,7 @@ function prompt_left() {
 
 function prompt() {
 	_PWD=${PWD/#$HOME/\~}
-	PS1=$(printf "%*s\r%s\n\$ " "$(($(tput cols)+14))" "$(prompt_right)" "$(prompt_left)")
+	PS1=$(printf "%*s\r%s\n\$ " "$(($(tput cols)+27))" "$(prompt_right)" "$(prompt_left)")
 }
 
 format_font() {
