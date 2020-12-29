@@ -1,2 +1,1 @@
-# my-bashrc
-Linux bash theme
+# my-linux-bashrc
