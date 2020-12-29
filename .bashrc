@@ -61,13 +61,19 @@ timer_stop() {
 	# PS1+="$_BLUE\\w \\\$$_RESET "
 # }
 
-bash_command() {
-	_PWD=${PWD/#$HOME/\~}
-}
-
-trap 'timer_start' DEBUG
+# trap 'timer_start' DEBUG
 
 bash_prompt() {
+	# timer_stop
+	none="$(tput sgr0)"
+	trap 'echo -ne "${none}"' DEBUG
+}
+
+function prompt_right() {
+  echo -e "\033[0;36m$(echo - )\D{%H:%M:%S}\033[0m"
+}
+
+function prompt_left() {
 	local LAST_COMMAND=$?
 	local _BLUE='\[\e[01;34m\]'
 	local _WHITE='\[\e[01;37m\]'
@@ -129,27 +135,12 @@ bash_prompt() {
 		;;
 	esac
 
-	timer_stop
+  echo -e "$TITLE\n${PROMPT_USER}${PROMPT_USER_SEPARATOR}${PROMPT_PWD}${PROMPT_PWD_SEPARATOR}${PROMPT_GIT}${PROMPT_GIT_SEPARATOR}${PROMPT_INPUT}"
+}
 
-	# PS1="$TITLE\n${PROMPT_USER}${PROMPT_USER_SEPARATOR}${PROMPT_PWD}${PROMPT_PWD_SEPARATOR}${PROMPT_GIT}${PROMPT_GIT_SEPARATOR}${PROMPT_INPUT}$timer_show \t "
-	PS1="$TITLE\n${PROMPT_USER}${PROMPT_USER_SEPARATOR}${PROMPT_PWD}${PROMPT_PWD_SEPARATOR}${PROMPT_GIT}${PROMPT_GIT_SEPARATOR}${PROMPT_INPUT}"
-
-	# if [[ $LAST_COMMAND == 0 ]]; then
-	# 		PS1+="$_GREEN$CHECKMARK "
-	# else
-	# 		PS1+="$_RED$FANCY_X "
-	# fi
-
-	# if [[ $EUID == 0 ]]; then
-	# 		PS1+="$_RED$_GREEN"
-	# else
-	# 		PS1+="$_GREEN"
-	# fi
-
-	# PS1+="$_BLUE$_RESET "
-
-	none="$(tput sgr0)"
-	trap 'echo -ne "${none}"' DEBUG
+function prompt() {
+	_PWD=${PWD/#$HOME/\~}
+	PS1=$(printf "%*s\r%s\n\$ " "$(($(tput cols)+14))" "$(prompt_right)" "$(prompt_left)")
 }
 
 format_font() {
@@ -171,8 +162,7 @@ format_font() {
 	esac
 }
 
-PROMPT_COMMAND=bash_command
-# RPROMPT='%(?.✔.%{$fg[red]%}✘%f)'
+PROMPT_COMMAND=prompt
 
 bash_prompt
 unset bash_prompt
