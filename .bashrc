@@ -108,7 +108,7 @@ prompt_left() {
   echo -e "$TITLE\n${PROMPT_USER}${PROMPT_USER_SEPARATOR}${PROMPT_PWD}${PROMPT_PWD_SEPARATOR}${PROMPT_GIT}${PROMPT_GIT_SEPARATOR}${PROMPT_INPUT}"
 }
 
-function prompt() {
+prompt() {
 	_PWD=${PWD/#$HOME/\~}
 	PS1=$(printf "%*s\r%s\n\$ " "$(($(tput cols)+27))" "$(prompt_right)" "$(prompt_left)")
 }
