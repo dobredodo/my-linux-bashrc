@@ -4,3 +4,4 @@
 
 ### TODO:
   - bash command: measure execution time
+  - [oh-my-zsh](https://ohmyz.sh/) theme
